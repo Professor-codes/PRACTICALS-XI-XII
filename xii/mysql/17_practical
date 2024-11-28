@@ -1,0 +1,75 @@
+Consider the following table named "Product", showing details of products being sold in a grocery shop.
+
+----------------------------------------------------------------------------------------------------
+create table product
+
+CREATE TABLE product (
+product_id INT PRIMARY KEY,
+product_name VARCHAR(50) NOT NULL,
+product_price FLOAT NOT NULL,
+product_quantity INT
+);
+----------------------------------------------------------------------------------------------------
+insert products in table
+
+INSERT INTO product
+(product_id, product_name, product_price, product_quantity)
+VALUES
+(10023, 'Wireless Mouse', 2600, 67),
+(10045, 'Gaming Keyboard', 4200, 45),
+(10034, 'Smartphone', 68000, 22),
+(10089, 'Office Chair', 12000, 8),
+(10022, 'Notebook', 220, 80),
+(10012, 'Pens', 20, 120),
+(10039, 'Coffee Mug', 160, 15),
+(10099, 'Computer Table', 18000, 2),
+(10087, 'Running Shoes', 5500, 12),
+(10011, 'Yoga Mat', 1200, 26);
+
+----------------------------------------------------------------------------------------------------
+primary key in product
+
+product_id
+
+----------------------------------------------------------------------------------------------------
+display product_id, product_name and product_price in descending order of product_name
+if product_name is same then display in ascending order of price
+
+SELECT product_id, product_name, product_price FROM product ORDER BY product_name DESC, product_price ASC;
+
+----------------------------------------------------------------------------------------------------
+Add column product_discount and product_final_price
+
+ALTER TABLE product ADD COLUMN product_discount FLOAT;
+ALTER TABLE product ADD COLUMN final_price FLOAT;
+
+----------------------------------------------------------------------------------------------------
+Discount 20% of the product_price for products where the product_price is greater than 5000
+otherwise the discount will be 0
+Count final price of product
+
+UPDATE product SET
+    product_discount = IF(product_price > 5000, product_price * 0.20, 0),
+    product_final_price = IF(product_price > 5000, product_price - (product_price * 0.20), product_price);
+
+----------------------------------------------------------------------------------------------------
+Average of price from reference to product_name
+
+SELECT product_name, AVG(product_price)
+FROM Product
+GROUP BY product_name;
+
+----------------------------------------------------------------------------------------------------
+Find distinct product from table
+
+SELECT DISTINCT product_name FROM product;
+
+----------------------------------------------------------------------------------------------------
+Count unique product from table
+
+SELECT COUNT(DISTINCT product_name) FROM Product;
+
+----------------------------------------------------------------------------------------------------
+Find min and max product price
+
+SELECT product_name, MAX(product_price), MIN(product_price) FROM product GROUP BY product_name;

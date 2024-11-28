@@ -1,0 +1,49 @@
+Create table orders
+
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    order_date DATE,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price FLOAT NOT NULL
+);
+
+----------------------------------------------------------------------------------------------------
+Insert data into table orders
+
+INSERT INTO orders
+(order_id, customer_id, order_date, product_id, quantity, price)
+VALUES
+(1, 101, '2023-01-01', 1, 2, 100),
+(2, 102, '2023-02-01', 2, 3, 200),
+(3, 101, '2023-03-01', 1, 1, 100),
+(4, 103, '2023-04-01', 3, 4, 300),
+(5, 101, '2023-05-01', 2, 2, 200);
+
+----------------------------------------------------------------------------------------------------
+Find the total quantity sold for each product
+
+SELECT product_id, SUM(quantity) AS quantity_sold_by_product FROM orders GROUP BY product_id;
+
+----------------------------------------------------------------------------------------------------
+Find the customers who have placed more than 2 orders
+
+SELECT customer_id, COUNT(order_id) AS total_orders FROM orders GROUP BY customer_id HAVING COUNT(order_id) > 2;
+
+----------------------------------------------------------------------------------------------------
+Find the average price of products sold per month
+
+SELECT DATE_FORMAT(order_date, '%Y-%m') AS month, AVG(price) AS average_price FROM orders GROUP BY DATE_FORMAT(order_date, '%Y-%m');
+
+----------------------------------------------------------------------------------------------------
+Find the products that have been sold in all months of a year
+
+SELECT product_id FROM orders GROUP BY product_id HAVING COUNT(DISTINCT MONTH(order_date)) = 12;
+
+----------------------------------------------------------------------------------------------------
+Find the products that have a total sales value greater than 1000
+
+SELECT product_id, SUM(quantity * price) AS total_sales_value FROM orders GROUP BY product_id HAVING SUM(quantity * price) > 1000;
+
+----------------------------------------------------------------------------------------------------

@@ -1,0 +1,125 @@
+Create table customers
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(50) NOT NULL,
+    city VARCHAR(20)
+);
+
+----------------------------------------------------------------------------------------------------
+Insert data into table customers
+
+INSERT INTO customers
+(customer_id, customer_name, city)
+VALUES
+(101, "Alice", "New York"),
+(102, "Bob", "Los Angeles"),
+(103, "Charlie", "Chicago");
+
+----------------------------------------------------------------------------------------------------
+Create table orders
+
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    order_date DATE,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price FLOAT NOT NULL
+);
+
+----------------------------------------------------------------------------------------------------
+Insert data into table orders
+
+INSERT INTO orders
+(order_id, customer_id, order_date, product_id, quantity, price)
+VALUES
+(1, 101, '2023-01-01', 1, 2, 100),
+(2, 102, '2023-02-01', 2, 3, 200),
+(3, 101, '2023-03-01', 1, 1, 100),
+(4, 103, '2023-04-01', 3, 4, 300),
+(5, 101, '2023-05-01', 2, 2, 200);
+
+----------------------------------------------------------------------------------------------------
+Perform an equi-join to find the customer name and order details
+
+SELECT
+    c.customer_name, o.order_id, o.order_date
+FROM
+    customers c
+INNER JOIN
+    orders o
+ON
+    c.customer_id = o.customer_id;
+
+----------------------------------------------------------------------------------------------------
+Perform a natural join to find the customer name and order details
+
+SELECT
+    customer_name, order_id, order_date
+FROM
+    customers
+NATURAL JOIN
+    orders;
+
+----------------------------------------------------------------------------------------------------
+Perform a Cartesian product to find all combinations of customers and orders
+
+SELECT
+    c.customer_name,
+    o.order_id
+FROM
+    customers c
+CROSS JOIN
+    orders o;
+
+----------------------------------------------------------------------------------------------------
+Insert a new record into the customers table
+
+INSERT INTO customers (customer_id, customer_name, city)
+VALUES (104, 'Diana', 'Houston');
+
+----------------------------------------------------------------------------------------------------
+Drop the orders table
+
+DROP TABLE orders;
+
+----------------------------------------------------------------------------------------------------
+Use NULL and NOT NULL constraints
+
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NULL,
+    city VARCHAR(20) NOT NULL
+);
+
+----------------------------------------------------------------------------------------------------
+find customers whose names start with 'A'
+
+SELECT
+    customer_id, customer_name, city
+FROM
+    customers
+WHERE
+    customer_name LIKE 'A%';
+
+----------------------------------------------------------------------------------------------------
+Use a foreign key to enforce referential integrity
+
+ALTER TABLE orders
+ADD FOREIGN KEY (customer_id) REFERENCES customers(customer_id);
+
+----------------------------------------------------------------------------------------------------
+Use a unique key to ensure that values in a column are unique
+
+ALTER TABLE customers
+ADD UNIQUE (email);
+
+INSERT INTO customers (customer_id, customer_name, email, city)
+VALUES (105, 'Jack', 'jack@example.com', 'San Francisco');
+
+----------------------------------------------------------------------------------------------------
+Delete a record from the orders table
+
+DELETE FROM orders WHERE order_id=5;

@@ -1,0 +1,72 @@
+Using the car show room database write the sql queries for the following table.
+
+----------------------------------------------------------------------------------------------------
+Create table cars
+
+CREATE TABLE cars (
+    car_id VARCHAR(10) PRIMARY KEY,
+    car_name VARCHAR(50),
+    car_price FLOAT,
+    car_model VARCHAR(50),
+    car_year_manufacture INT,
+    car_fuel_type VARCHAR(10) NOT NULL,
+    car_final_price FLOAT NOT NULL
+);
+
+----------------------------------------------------------------------------------------------------
+Insert data into cars
+
+INSERT INTO cars
+(car_id, car_name, car_price, car_model, car_year_manufacture, car_fuel_type, car_final_price)
+VALUES
+('D001', 'Dzire', 582613.00, 'LXI', 2017, 'Petrol', 652526.60),
+('D002', 'Dzire', 673112.00, 'VXI', 2018, 'Petrol', 753885.40),
+('B001', 'Baleno', 567031.00, 'Sigma1.2', 2019, 'Petrol', 635074.70),
+('B002', 'Baleno', 647858.00, 'Delta1.2', 2018, 'Petrol', 725601.00),
+('E001', 'EECO', 355205.00, '5 STR STD', 2017, 'CNG', 397829.60),
+('E002', 'EECO', 654914.00, 'CARE', 2018, 'CNG', 733503.70),
+('S001', 'SWIFT', 514000.00, 'LXI', 2017, 'Petrol', 575680.00),
+('S002', 'SWIFT', 614000.00, 'VXI', 2018, 'Petrol', 687680.00);
+
+----------------------------------------------------------------------------------------------------
+Add a new column Discount in the cars table
+
+ALTER TABLE cars
+ADD COLUMN car_discount FLOAT;
+
+----------------------------------------------------------------------------------------------------
+No discount is available on the LXI model
+
+UPDATE cars SET car_discount=0 WHERE car_model='LXI';
+
+----------------------------------------------------------------------------------------------------
+VXI model gives a 10 per cent discount
+
+UPDATE cars SET car_discount=(car_final_price - (0.10 * car_final_price)) WHERE car_model='VXI';
+
+----------------------------------------------------------------------------------------------------
+A 12% discount is given on cars other than LXI model and VXI model
+
+UPDATE cars SET car_discount=(car_final_price * 0.12) WHERE car_model NOT IN ('LXI', 'VXI');
+
+----------------------------------------------------------------------------------------------------
+Display the name of the costliest car with fuel type "Petrol"
+
+SELECT * FROM cars WHERE car_fuel_type = 'Petrol'
+AND car_final_price = (SELECT MAX(car_final_price) FROM cars WHERE car_fuel_type = 'Petrol');
+
+----------------------------------------------------------------------------------------------------
+Calculate the average discount and total discount available on baleno cars
+
+SELECT AVG(car_discount) AS average_discount,
+SUM(car_discount) AS total_discount
+FROM cars
+WHERE car_name = 'Baleno';
+
+----------------------------------------------------------------------------------------------------
+List the total number of cars having no discount
+
+SELECT COUNT(*) FROM cars WHERE car_discount = 0;
+
+----------------------------------------------------------------------------------------------------
+
